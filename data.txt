@@ -1,0 +1,10 @@
+Sản phẩm : 4 
+Tên sản phẩm : Áo Thun Basic Kem - ATBD Kem
+Giá sản phẩm : 171,100đ
+Tên sản phẩm : Áo Thun Basic Xanh Rêu - ATBD Xanh Rêu
+Giá sản phẩm : 171,100đ
+Tên sản phẩm : Áo Thun Basic Đỏ - ATBD Đỏ
+Giá sản phẩm : 171,100đ
+Tên sản phẩm : Áo Thun Basic Trắng - ATBD Trắng
+Giá sản phẩm : 171,100đ
+Lưu ý : Tên sản phẩm + giá sản phẩm in đậm 
