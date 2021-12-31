@@ -38,3 +38,34 @@ function render() {
   }
 }
 render();
+
+let cart;
+let keys = Object.keys(localStorage);
+if (keys.indexOf("cart") != -1) {
+  cart = JSON.parse(localStorage.getItem("cart"));
+} else {
+  cart = [];
+}
+const cartNumber = document.querySelector(".cart-number");
+if (cart.length) {
+  cartNumber.style.display = "block";
+  cartNumber.innerHTML = cart.length;
+} else {
+  cartNumber.style.display = "none";
+}
+
+const products = document.querySelectorAll(".product");
+for (let x of products) {
+  x.onclick = () => {
+    const product = {
+      src: "",
+      name: "",
+      price: "",
+    };
+    product.src = x.children[0].attributes[0].value;
+    product.name = x.children[1].children[0].innerHTML;
+    product.price = x.children[1].children[1].innerHTML;
+    localStorage.setItem("product", JSON.stringify(product));
+    window.location.href = "./product";
+  };
+}
