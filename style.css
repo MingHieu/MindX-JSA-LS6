@@ -3,3 +3,13 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.product {
+  width:100%;
+  max-width: 300px;
+  text-align: center;
+}
+
+.product img {
+  width: 100%;
+}
