@@ -21,51 +21,89 @@ const data = [
   },
 ];
 
-const appProduct = document.querySelector(".app-product");
 function render() {
+  const appProduct = document.querySelector(".app-product");
   appProduct.innerHTML = "";
   for (let x of data) {
     appProduct.innerHTML += `
         <div class="col-lg-3 col-md-6 col-12 d-flex justify-content-center">
-            <div class="product">
-                <img src="${x.src}" alt="">
+            <div class="product" data-product-id="${data.indexOf(x)}" >
+                <img src="${x.src}" alt="" width="100%">
                 <div class="product-body">
                     <h5 class="product-name">${x.name}</h5>
                     <p class="product-price">${x.price}</p>
                 </div>
+                <button class="product-button" data-product-id="${data.indexOf(
+                  x
+                )}" >Add to cart</button>
             </div>
         </div>`;
   }
 }
 render();
 
-let cart;
-let keys = Object.keys(localStorage);
-if (keys.indexOf("cart") != -1) {
-  cart = JSON.parse(localStorage.getItem("cart"));
-} else {
-  cart = [];
-}
-const cartNumber = document.querySelector(".cart-number");
-if (cart.length) {
-  cartNumber.style.display = "block";
-  cartNumber.innerHTML = cart.length;
-} else {
-  cartNumber.style.display = "none";
-}
+let getCart = () => {
+  let cart = JSON.parse(localStorage.getItem("cart"));
+  if (cart === null || cart === undefined) {
+    cart = [];
+  }
+  return cart;
+};
 
-const products = document.querySelectorAll(".product");
-for (let x of products) {
-  x.onclick = () => {
-    const product = {
-      src: "",
-      name: "",
-      price: "",
-    };
-    product.src = x.children[0].attributes[0].value;
-    product.name = x.children[1].children[0].innerHTML;
-    product.price = x.children[1].children[1].innerHTML;
-    localStorage.setItem("product", JSON.stringify(product));
-    window.location.href = "./product";
+let renderCart = () => {
+  let cart = getCart();
+  const cartNumber = document.querySelector(".cart-number");
+  if (cart.length) {
+    cartNumber.style.display = "block";
+    cartNumber.innerHTML = cart.length;
+  } else {
+    cartNumber.style.display = "none";
+  }
+  let cartDom = document.querySelector(".cart");
+  cartDom.innerHTML = "";
+  for (let x of cart) {
+    cartDom.innerHTML += `
+    <div class="cart-product">
+      <div class="cart-product-preview">
+          <img src="${x.src}" alt="" width="100%">
+      </div>
+      <div class="cart-product-body">
+          <h5 class="cart-product-name">${x.name}</h5>
+          <p class="cart-product-price">${x.price}</p>
+      </div>
+    </div>
+    `;
+  }
+  let cartContainer = document.querySelector(".cart-container");
+  cartContainer.onclick = (e) => {
+    if (e.target == cartContainer) {
+      cartDom.style.transform = "translateX(100%)";
+      setTimeout(() => {
+        cartContainer.style.display = "none";
+      }, 300);
+    }
   };
-}
+  let showCartBtn = document.querySelector(".cart-icon-wrapper");
+  showCartBtn.onclick = () => {
+    cartContainer.style.display = "block";
+    setTimeout(() => {
+      cartDom.style.transform = "translateX(0)";
+    }, 1);
+  };
+};
+renderCart();
+
+let saveItem = () => {
+  const addToCartBtn = document.querySelectorAll(".product-button");
+  for (let x of addToCartBtn) {
+    x.onclick = () => {
+      const productId = x.getAttribute("data-product-id");
+      const product = data[productId];
+      let cart = getCart();
+      cart.push(product);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    };
+  }
+};
+saveItem();
